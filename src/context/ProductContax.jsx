@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
+import reducer from "../reducer/ProductReducer";
 
 export const AppContext = createContext();
 
@@ -15,12 +16,17 @@ const initialState = {
 const AppProvider = ({ children }) => {
   // useReducer complex data manage karva mate use thay aetle same usestate jevu kam kare che
 
-  const [state, dispatch] = useReducer(state, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const getProducts = async (url) => {
-    const response = await axios.get(url);
-    const products = await response?.data;
-    dispatch({ type: "MY_API_DATA", payload: products });
+    dispatch({ type: "SET_LOADING" });
+    try {
+      const response = await axios.get(url);
+      const products = await response?.data;
+      dispatch({ type: "SET_API_DATA", payload: products });
+    } catch (error) {
+      dispatch({ type: "API_ERROR" });
+    }
   };
 
   useEffect(() => {
