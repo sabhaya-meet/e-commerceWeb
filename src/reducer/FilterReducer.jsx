@@ -22,12 +22,97 @@ const FilterReducer = (state, action) => {
       };
 
     case "GET_SORT_VALUE":
-      const userSortValue = document.getElementById("sort");
-      let sort_value = userSortValue.options[userSortValue.selectedIndex].value;
+      // const userSortValue = document.getElementById("sort");
+      // let sort_value = userSortValue.options[userSortValue.selectedIndex].value;
 
       return {
         ...state,
-        sorting_value: sort_value,
+        sorting_value: action.payload,
+      };
+
+    case "SORTING_PRODUCTS": {
+      // sort syntax
+      const tempSortProduct = [...action.payload];
+      const sortType = state.sorting_value;
+
+      const sortedData = tempSortProduct.sort((a, b) => {
+        switch (sortType) {
+          case "lowest":
+            return a.price - b.price;
+          case "highest":
+            return b.price - a.price;
+          case "a-z":
+            return a.name.localeCompare(b.name);
+          case "z-a":
+            return b.name.localeCompare(a.name);
+          default:
+            return state;
+        }
+      });
+      return {
+        ...state,
+        filter_products: sortedData,
+      };
+
+      // long syntex
+
+      //   let newSortData;
+      //   let tempSortProduct = [...action.payload];
+
+      //   if (state.sorting_value === "lowest") {
+      //     const sortingProducts = (a, b) => {
+      //       return a.price - b.price;
+      //     };
+      //     newSortData = tempSortProduct.sort(sortingProducts);
+      //   }
+      //   if (state.sorting_value === "highest") {
+      //     const sortingProducts = (a, b) => {
+      //       return b.price - a.price;
+      //     };
+      //     newSortData = tempSortProduct.sort(sortingProducts);
+      //   }
+
+      //   if (state.sorting_value === "a-z") {
+      //     newSortData = tempSortProduct.sort((a, b) =>
+      //       a.name.localeCompare(b.name)
+      //     );
+      //   }
+      //   if (state.sorting_value === "z-a") {
+      //     newSortData = tempSortProduct.sort((a, b) =>
+      //       b.name.localeCompare(a.name)
+      //     );
+      //   }
+
+      //   if (state.sorting_value)
+      //     return {
+      //       ...state,
+      //       filter_products: newSortData,
+      //     };
+    }
+
+    case "UPDATE_FILTERS_VALUE":
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          text: value,
+        },
+      };
+
+    case "FILTER_PRODUCTS":
+      let { all_products } = state;
+      let tempFilterProduct = [...all_products];
+      const { text } = state.filters;
+      if (text) {
+        tempFilterProduct = tempFilterProduct.filter((curElem) => {
+          return curElem.name.toLowerCase().includes(text);
+        });
+      }
+
+      return {
+        ...state,
+        filter_products: tempFilterProduct,
       };
     default:
       return state;
