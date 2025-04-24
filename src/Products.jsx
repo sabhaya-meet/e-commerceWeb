@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ProductList from "./components/ProductList";
 import Sort from "./components/Sort";
 import FilterSection from "./components/FilterSection";
+import useFilterContext from "./hooks/useFilterContext";
 
 const Products = () => {
   return (
