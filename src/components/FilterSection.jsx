@@ -4,23 +4,27 @@ import styled from "styled-components";
 
 const FilterSection = () => {
   const {
-    filters: { text },
+    filters: { text, color },
     all_products,
     updateFilterValue,
   } = useFilterContext();
-
   // TO GET THE UNIQUE DATA OF EACH FIELDS
   const getUniqueData = (data, property) => {
     let newVal = data.map((item) => {
       return item[property];
     });
-    newVal = ["All", ...new Set(newVal)];
-    console.log(newVal, "newVal");
+
+    if (property === "colors") {
+      // return (newVal = ["All", ...new Set([].concat(...newVal))]);
+      newVal = newVal.flat();
+    }
+    return (newVal = ["all", ...new Set(newVal)]);
   };
   //  WE NEED  UNIQUE DATA
 
-  const categoryOnlyData = getUniqueData(all_products, "category");
-
+  const categoryData = getUniqueData(all_products, "category");
+  const companyData = getUniqueData(all_products, "company");
+  const colorData = getUniqueData(all_products, "colors");
   return (
     <Wrapper>
       <div className="filter-search">
@@ -33,6 +37,74 @@ const FilterSection = () => {
             placeholder="Search"
           />
         </form>
+      </div>
+
+      {/* filter category */}
+
+      <div className="filter-category">
+        <h3>Category</h3>
+        <div>
+          {categoryData.map((curElem, index) => {
+            return (
+              <button
+                key={index}
+                type="button"
+                name="category"
+                value={curElem}
+                // className={curElem === category ? "active" : ""}
+                onClick={updateFilterValue}
+              >
+                {curElem}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* filter company */}
+
+      <div className="filter-company">
+        <h3>Company</h3>
+        <form action="#">
+          <select
+            name="company"
+            id="company"
+            className="filter-company--select"
+            onClick={updateFilterValue}
+          >
+            {companyData.map((item, index) => {
+              return (
+                <option key={index} value={item} name="company">
+                  {item}
+                </option>
+              );
+            })}
+          </select>
+        </form>
+      </div>
+
+      {/* filter colors */}
+
+      <div className="filter-colors colors">
+        <h3>Colors</h3>
+
+        <div className="filter-colors-style">
+          {colorData.map((curColor, index) => {
+            return (
+              <button
+                key={index}
+                className="btnStyle"
+                type="button"
+                value={curColor}
+                name="color"
+                style={{ backgroundColor: curColor }}
+                onClick={updateFilterValue}
+              >
+                {color === curColor ? "" : null}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </Wrapper>
   );

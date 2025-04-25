@@ -10,6 +10,9 @@ const initialState = {
   sorting_value: "lowest",
   filters: {
     text: "",
+    category: "all",
+    company: "all",
+    color: "all",
   },
 };
 
@@ -38,19 +41,18 @@ const FilterContextProvider = ({ children }) => {
 
   // search and filter value
   const updateFilterValue = (event) => {
-    let name = event.target.value;
+    let name = event.target.name;
     let value = event.target.value;
 
     return dispatch({ type: "UPDATE_FILTERS_VALUE", payload: { name, value } });
   };
-
   useEffect(() => {
     dispatch({ type: "FILTER_PRODUCTS" });
   }, [state.filters]);
 
   useEffect(() => {
     dispatch({ type: "SORTING_PRODUCTS", payload: products });
-  }, [state.sorting_value]);
+  }, [products, state.sorting_value]);
 
   useEffect(() => {
     dispatch({ type: "LOAD_FILTER_PRODUCTS", payload: products });
