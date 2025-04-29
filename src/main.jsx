@@ -5,12 +5,15 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import AppProvider from "./context/ProductContax";
 import FilterContextProvider from "./context/FilterContext";
+import CartProvider from "./context/Cart_Context";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AppProvider>
       <FilterContextProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </FilterContextProvider>
     </AppProvider>
   </StrictMode>

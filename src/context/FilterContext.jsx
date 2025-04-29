@@ -13,6 +13,9 @@ const initialState = {
     category: "all",
     company: "all",
     color: "all",
+    maxPrice: 0,
+    price: 0,
+    minPrice: 0,
   },
 };
 
@@ -46,12 +49,18 @@ const FilterContextProvider = ({ children }) => {
 
     return dispatch({ type: "UPDATE_FILTERS_VALUE", payload: { name, value } });
   };
+
+  // clear filter
+  const clearFilters = () => {
+    dispatch({ type: "CLEAR_FILTER" });
+  };
+
   useEffect(() => {
     dispatch({ type: "FILTER_PRODUCTS" });
   }, [state.filters]);
 
   useEffect(() => {
-    dispatch({ type: "SORTING_PRODUCTS", payload: products });
+    dispatch({ type: "SORTING_PRODUCT", payload: products });
   }, [products, state.sorting_value]);
 
   useEffect(() => {
@@ -59,7 +68,14 @@ const FilterContextProvider = ({ children }) => {
   }, [products]);
   return (
     <FilterContext.Provider
-      value={{ ...state, setGridView, setListView, sorting, updateFilterValue }}
+      value={{
+        ...state,
+        setGridView,
+        setListView,
+        sorting,
+        updateFilterValue,
+        clearFilters,
+      }}
     >
       {children}
     </FilterContext.Provider>
