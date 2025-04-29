@@ -4,16 +4,16 @@ import CartAmountToggle from "./CartAmountToggle";
 import { FaTrash } from "react-icons/fa";
 import useCartContext from "../hooks/useCartContext";
 
-const CartItem = ({ id, name, image, color, price }) => {
-  const { removeItem } = useCartContext();
-  const [amount, setAmount] = useState(1);
-  const setDecrease = () => {
-    // amount > 1 ? setAmount(amount - 1) : setAmount(1);
-  };
+const CartItem = ({ id, name, image, color, price, amount }) => {
+  const { removeItem, setDecrease, setIncrease } = useCartContext();
+  //   const [amount, setAmount] = useState(1);
+  //   const setDecrease = () => {
+  //     // amount > 1 ? setAmount(amount - 1) : setAmount(1);
+  //   };
 
-  const setIncrease = () => {
-    // amount < stock ? setAmount(amount + 1) : setAmount(stock);
-  };
+  //   const setIncrease = () => {
+  //     // amount < stock ? setAmount(amount + 1) : setAmount(stock);
+  //   };
   return (
     <div className="cart_heading grid grid-five-column">
       <div className="cart-image--name">
@@ -45,8 +45,8 @@ const CartItem = ({ id, name, image, color, price }) => {
       {/* Quantity */}
       <CartAmountToggle
         amount={amount}
-        setDecrease={setDecrease}
-        setIncrease={setIncrease}
+        setDecrease={() => setDecrease(id)}
+        setIncrease={() => setIncrease(id)}
       />
 
       {/* subTotal */}
